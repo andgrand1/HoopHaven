@@ -1,11 +1,10 @@
 const User = require("./models/User");
 const Listing = require("./models/Listing");
-const multer = require('multer');
+const multer = require("multer");
 
-// Configure multer for handling file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // Save uploaded files to the 'uploads' directory
+    cb(null, "uploads/"); // Save uploaded files to the 'uploads' directory
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname); // Use the original filename
@@ -13,7 +12,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-
 
 const resolvers = {
   Query: {
@@ -60,7 +58,6 @@ const resolvers = {
 
       return listings;
     },
-    // Add other query resolvers as needed
   },
   Mutation: {
     createUser: async (parent, { username, email, password }) => {
@@ -85,12 +82,16 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    createListing: async (_, { title, description, price, size, gender, category, active }, { req }) => {
+    createListing: async (
+      _,
+      { title, description, price, size, gender, category, active },
+      { req }
+    ) => {
       try {
-        const user = await User.findById(req.userId); // Assuming you have user authentication middleware
+        const user = await User.findById(req.userId);
 
         if (!user) {
-          throw new Error('User not found'); // Handle the case where the user is not found
+          throw new Error("User not found");
         }
 
         const pictures = req.files.map((file) => file.path); // Get file paths
@@ -114,14 +115,52 @@ const resolvers = {
         return listing;
       } catch (error) {
         console.error(error);
-        throw new Error('Error creating listing');
+        throw new Error("Error creating listing");
+      }
+    },
+    editListing: async (
+      _,
+      {
+        id,
+        title,
+        description,
+        price,
+        size,
+        gender,
+        category,
+        pictures,
+        active,
+      }
+    ) => {
+      try {
+        const updatedListing = await Listing.findByIdAndUpdate(
+          id,
+          {
+            title,
+            description,
+            price,
+            size,
+            gender,
+            category,
+            pictures,
+            active,
+          },
+          { new: true }
+        );
+
+        return updatedListing;
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to edit listing");
       }
     },
     addToCart: async (_, { userId, listingId }) => {
       const user = await User.findById(userId);
 
       // Check if the item is already in the cart
-      const existingCartItem = user.cart.find((item) => item.listingId.equals(listingId));
+      const existingCartItem = user.cart.find((item) =>
+        item.listingId.equals(listingId)
+      );
 
       if (!existingCartItem) {
         // If the item is not in the cart, add it
@@ -141,7 +180,6 @@ const resolvers = {
       await user.save();
       return user;
     },
-    // Add other mutation resolvers as needed
   },
   User: {
     listings: async (user) => {

@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
-import ListingItem from '../components/ListingItem'; // Import your ListingItem component
+import { useState, useEffect } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import ListingItem from "../components/ListingItem"; // Import your ListingItem component
 
 const Homepage = () => {
   const [listings, setListings] = useState([]);
 
   useEffect(() => {
-    // Fetch your listings data here and update the state
-    // Example: fetchListings().then((data) => setListings(data));
+    //todo
   }, []);
 
   return (
