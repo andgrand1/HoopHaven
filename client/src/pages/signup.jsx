@@ -1,11 +1,37 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const Signup = () => {
+  const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  
 
-  const handleSignup = () => {
-    // signup code
+  const handleSignup = async () => {
+    try {
+      const response = await fetch('', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      if (response.ok) {
+        
+        console.log('Signup successful');
+        history.push('/dashboard'); 
+      } else {
+        
+        console.error('Signup failed');
+      }
+    } catch (error) {
+      console.error('Error during signup:', error);
+    }
+
   };
 
   return (

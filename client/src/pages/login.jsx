@@ -5,7 +5,31 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // login code
+    const handleLogin = async () => {
+      try {
+        const response = await fetch('', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email, 
+            password,
+          }),
+        });
+    
+        if (response.ok) {
+          
+          console.log('Login successful');
+        } else {
+          
+          console.error('Login failed');
+        }
+      } catch (error) {
+        console.error('Error during login:', error);
+      }
+    };
+    
   };
 
   return (
