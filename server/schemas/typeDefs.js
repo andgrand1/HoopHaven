@@ -10,7 +10,7 @@ const typeDefs = gql`
   }
 
   type Listing {
-    _id: ID!
+    id: ID!
     title: String!
     description: String!
     price: Float!
@@ -22,15 +22,37 @@ const typeDefs = gql`
     createdBy: User!
   }
 
+  type CartItem {
+    id: ID!
+    listing: Listing!
+  }
+
+  type AuthPayload {
+    token: String!
+    user: User!
+  }
+
+  input ListingFilterInput {
+    price: Float
+    size: String
+    gender: String
+    category: String
+  }
+
+  input ListingSortInput {
+    field: String
+    order: String
+  }
+
   type Query {
-    getlisting(id: ID!): Listing
-    getUsers: [User]!
-    getListings: [Listing]!
-    getUserCart(userId: ID!): [CartItem]!
+    user(id: ID!): User
+    listing(id: ID!): Listing
+    listings(filter: ListingFilterInput, sort: ListingSortInput): [Listing]!
   }
 
   type Mutation {
-    createUser(username: String!, email: String!): User!
+    createUser(username: String!, email: String!, password: String!): User!
+    authenticateUser(username: String!, password: String!): AuthPayload!
     createListing(
       title: String!
       description: String!
@@ -52,7 +74,7 @@ const typeDefs = gql`
       active: Boolean
       pictures: [String]
     ): Listing
-    addToCart(userId: ID!, listingId: ID!, quantity: Int!): User!
+    addToCart(userId: ID!, listingId: ID!): User!
     removeFromCart(userId: ID!, cartItemId: ID!): User!
   }
 `;
