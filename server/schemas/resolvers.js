@@ -1,6 +1,11 @@
 const User = require("./models/User");
 const Listing = require("./models/Listing");
 const multer = require("multer");
+const {
+  authenticateUser,
+  signToken,
+  AuthenticationError,
+} = require("../utils/auth");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -66,21 +71,23 @@ const resolvers = {
 
       return { token, user };
     },
-    login: async (parent, { email, password }) => {
-      const user = await User.findOne({ email });
+    loginUser: async (_, { email, password }) => {
+      try {
+        const user = await authenticateUser(email, password);
 
-      if (!user) {
-        throw AuthenticationError;
+        const token = signToken(user);
+
+        return {
+          token,
+          user,
+        };
+      } catch (error) {
+        // Handle authentication errors
+        if (error === AuthenticationError) {
+          console.error("Authentication failed:", error);
+        }
+        throw error;
       }
-
-      const correctPw = await user.isCorrectPassword(password);
-
-      if (!correctPw) {
-        throw AuthenticationError;
-      }
-
-      const token = signToken(user);
-      return { token, user };
     },
     createListing: async (
       _,
@@ -182,11 +189,13 @@ const resolvers = {
     },
   },
   User: {
+    id: (user) => user._id,
     listings: async (user) => {
       return Listing.find({ createdBy: user._id });
     },
   },
   Listing: {
+    id: (listing) => listing._id,
     createdBy: async (listing) => {
       return User.findById(listing.createdBy);
     },

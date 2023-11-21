@@ -1,44 +1,77 @@
-const User = require('../server/models/User.js'); 
-const Listing = require('../server/models/Listing.js'); 
-const resolvers = {
-  Query: {
-    getlisting: async (_, { id }) => {
-      return Listing.findById(id);
-    },
-    getUsers: async () => {
-      return User.find();
-    },
-    getListings: async () => {
-      return Listing.find();
-    },
-    getUserCart: async (_, { userId }) => {
-      const user = await User.findById(userId).populate('cart.listing');
-      return user.cart;
-    },
-  },
-  Mutation: {
-    createUser: async (_, { username, email }) => {
-      return User.create({ username, email });
-    },
-    createListing: async (_, listingData) => {
-      return Listing.create(listingData);
-    },
-    editListing: async (_, { id, ...updatedListingData }) => {
-      return Listing.findByIdAndUpdate(id, updatedListingData, { new: true });
-    },
-    addToCart: async (_, { userId, listingId, quantity }) => {
-      const user = await User.findById(userId);
-      user.cart.push({ listing: listingId, quantity });
-      await user.save();
-      return user;
-    },
-    removeFromCart: async (_, { userId, cartItemId }) => {
-      const user = await User.findById(userId);
-      user.cart = user.cart.filter((item) => item._id.toString() !== cartItemId);
-      await user.save();
-      return user;
-    },
-  },
-};
+import { gql } from "@apollo/client";
 
-module.exports = resolvers;
+export const GET_USERS = gql`
+  query GetUser($id: ID!) {
+    user(id: $id) {
+      id
+      username
+      email
+      listings {
+        id
+        title
+        description
+        price
+        size
+        gender
+        category
+        active
+        pictures
+      }
+      cart {
+        listing {
+          id
+          title
+          description
+          price
+          size
+          gender
+          category
+          active
+          pictures
+        }
+      }
+    }
+  }
+`;
+
+export const GET_LISTINGS = gql`
+  query GetListings($filter: ListingFilterInput, $sort: ListingSortInput) {
+    listings(filter: $filter, sort: $sort) {
+      id
+      title
+      description
+      price
+      size
+      gender
+      category
+      active
+      pictures
+      createdBy {
+        id
+        username
+        email
+      }
+    }
+  }
+`;
+
+export const GET_LISTING = gql`
+  query GetListing($id: ID!) {
+    listing(id: $id) {
+      id
+      title
+      description
+      price
+      size
+      gender
+      category
+      active
+      pictures
+      createdBy {
+        id
+        username
+        email
+      }
+    }
+  }
+`;
