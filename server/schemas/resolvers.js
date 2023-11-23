@@ -1,30 +1,33 @@
-const User = require("./models/User");
-const Listing = require("./models/Listing");
-const multer = require("multer");
+const User = require("../models/User");
+const Listing = require("../models/Listing");
+//const multer = require("multer");
 const {
   authenticateUser,
   signToken,
   AuthenticationError,
 } = require("../utils/auth");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Save uploaded files to the 'uploads' directory
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname); // Use the original filename
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads/"); // Save uploaded files to the 'uploads' directory
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, file.originalname); // Use the original filename
+//   },
+// });
 
-const upload = multer({ storage: storage });
+// const upload = multer({ storage: storage });
 
 const resolvers = {
   Query: {
-    user: async (_, { id }) => {
-      return User.findById(id);
+    user: async (_, { _id }) => {
+      return User.findById(_id);
     },
-    listing: async (_, { id }) => {
-      return Listing.findById(id);
+    users: async () => {
+      return User.find();
+    },
+    listing: async (_, { _id }) => {
+      return Listing.findById(_id);
     },
     listings: async (_, { filter, sort }) => {
       let query = { active: true };
@@ -112,14 +115,21 @@ const resolvers = {
           category,
           active,
           pictures,
-          createdBy: user._id,
+          createdBy,
         });
 
-        await listing.save();
-        user.listings.push(listing);
-        await user.save();
+        const userPush = await User.findOneAndUpdate(
+          { _id },
+          { $push: { listing: listing } },
+          { new: true }
+        );
+        return userPush;
 
-        return listing;
+        // await listing.save();
+        // user.listings.push(listing);
+        // await user.save();
+
+        //return listing;
       } catch (error) {
         console.error(error);
         throw new Error("Error creating listing");
@@ -128,7 +138,7 @@ const resolvers = {
     editListing: async (
       _,
       {
-        id,
+        _id,
         title,
         description,
         price,
@@ -189,13 +199,13 @@ const resolvers = {
     },
   },
   User: {
-    id: (user) => user._id,
+    // id: (user) => user._id,
     listings: async (user) => {
       return Listing.find({ createdBy: user._id });
     },
   },
   Listing: {
-    id: (listing) => listing._id,
+    //id: (listing) => listing._id,
     createdBy: async (listing) => {
       return User.findById(listing.createdBy);
     },
