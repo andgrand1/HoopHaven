@@ -19,10 +19,10 @@ const userSchema = new Schema({
     required: true,
     minlength: 5,
   },
-  listings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Listing" }],
+  listings: [{ type: Schema.Types.ObjectId, ref: "Listing" }],
   cart: [
     {
-      listingId: { type: mongoose.Schema.Types.ObjectId, ref: "Listing" },
+      listingId: { type: Schema.Types.ObjectId, ref: "Listing" },
     },
   ],
 });

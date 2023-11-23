@@ -1,16 +1,16 @@
 const { ApolloServer, gql } = require("@apollo/server");
 
-const typeDefs = gql`
+const typeDefs = `
   type User {
-    id: ID!
+    _id: ID!
     username: String!
     email: String!
-    cart: [CartItem]!
-    listings: [Listing]!
+    cart: [CartItem]
+    listings: [Listing]
   }
 
   type Listing {
-    id: ID!
+    _id: ID!
     title: String!
     description: String!
     price: Float!
@@ -18,12 +18,12 @@ const typeDefs = gql`
     gender: String!
     category: String!
     active: Boolean!
-    pictures: [String]!
-    createdBy: User!
+    pictures: [String]
+    createdBy: User
   }
 
   type CartItem {
-    id: ID!
+    _id: ID!
     listing: Listing!
   }
 
@@ -45,14 +45,15 @@ const typeDefs = gql`
   }
 
   type Query {
-    user(id: ID!): User
-    listing(id: ID!): Listing
+    user(_id: ID!): User
+    users: [User]!
+    listing(_id: ID!): Listing
     listings(filter: ListingFilterInput, sort: ListingSortInput): [Listing]!
   }
 
   type Mutation {
     createUser(username: String!, email: String!, password: String!): User!
-    authenticateUser(username: String!, password: String!): AuthPayload!
+    loginUser(username: String!, password: String!): AuthPayload!
     createListing(
       title: String!
       description: String!
@@ -64,7 +65,7 @@ const typeDefs = gql`
       pictures: [String]!
     ): Listing
     editListing(
-      id: ID!
+      _id: ID!
       title: String
       description: String
       price: Float

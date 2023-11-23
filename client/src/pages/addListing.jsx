@@ -1,98 +1,148 @@
-import React, { useState } from 'react';
-import { useDropzone } from 'react-drag-drop-files';
+import { useState } from "react";
+import { useMutation } from "@apollo/client";
+import { CREATE_LISTING } from "../../utils/mutations";
 
-const AddListing = () => {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [size, setSize] = useState('');
-  const [gender, setGender] = useState('');
-  const [category, setCategory] = useState('');
+const CreateListing = () => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState(0);
+  const [size, setSize] = useState("");
+  const [gender, setGender] = useState("");
+  const [category, setCategory] = useState("");
   const [pictures, setPictures] = useState([]);
 
-  const { dropzoneProps, files } = useDropzone({
-    onDrop: (droppedFiles) => {
-      // Handle dropped files
-      console.log('Dropped files:', droppedFiles);
-      setPictures([...pictures, ...droppedFiles]);
-    },
-  });
+  // UseMutation hook to execute the mutation
+  const [createListing] = useMutation(CREATE_LISTING);
 
-  const handleAddListing = async () => {
+  const handleDrop = (files) => {
+    // Handle the dropped files (images) and update the state
+    setPictures([...pictures, ...files]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     try {
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('description', description);
-      formData.append('price', price);
-      formData.append('size', size);
-      formData.append('gender', gender);
-      formData.append('category', category);
-      pictures.forEach((file, index) => {
-        formData.append(`picture${index + 1}`, file);
+      // Execute the addListing mutation with the form data
+      const { data } = await createListing({
+        variables: {
+          title,
+          description,
+          price,
+          size,
+          gender,
+          category,
+          pictures,
+        },
       });
 
-      const response = await fetch('http://localhost:3001/graphql', {
-        method: 'POST',
-        body: formData,
-      });
+      console.log("Listing added:", data.createListing);
 
-      if (response.ok) {
-        console.log('Listing added successfully');
-        // Redirect or perform any other actions after successful listing addition
-      } else {
-        console.error('Failed to add listing');
-      }
+      // Clear the form after successful submission
+      setTitle("");
+      setDescription("");
+      setPrice(0);
+      setSize("");
+      setGender("");
+      setCategory("");
+      setPictures([]);
     } catch (error) {
-      console.error('Error during listing addition:', error);
+      console.error("Error adding listing:", error.message);
+
     }
   };
 
   return (
     <div>
-      <h1>Add Listing</h1>
-      <form>
-        <label>Name:</label>
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+      <h2>Add Listing</h2>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <label>
+          Title:
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </label>
+        <br />
+        <label>
+          Description:
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </label>
+        <br />
+        <label>
+          Price:
+          <input
+            type="number"
+            value={price}
+            onChange={(e) => setPrice(Number(e.target.value))}
+          />
+        </label>
+        <br />
+        <label>
+          Size:
+          <input
+            type="text"
+            value={size}
+            onChange={(e) => setSize(e.target.value)}
+          />
+        </label>
+        <br />
+        <label>
+          Gender:
+          <input
+            type="text"
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+          />
+        </label>
+        <br />
+        <label>
+          Category:
+          <input
+            type="text"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          />
+        </label>
+        <br />
 
-        <label>Description:</label>
-        <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-
-        <label>Price:</label>
-        <input type="text" value={price} onChange={(e) => setPrice(e.target.value)} />
-
-        <label>Size:</label>
-        <input type="text" value={size} onChange={(e) => setSize(e.target.value)} />
-
-        <label>Gender:</label>
-        <input type="text" value={gender} onChange={(e) => setGender(e.target.value)} />
-
-        <label>Category:</label>
-        <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} />
-
-        {/* Dropzone for pictures */}
-        <label>Pictures:</label>
-        <div {...dropzoneProps} style={{ border: '2px dashed #ccc', padding: '20px', textAlign: 'center', cursor: 'pointer' }}>
-          <p>Drag and drop files here, or click to select files</p>
-        </div>
-
-        {/* Display selected files */}
-        {pictures.length > 0 && (
-          <div>
-            <h3>Selected Pictures:</h3>
-            <ul>
-              {pictures.map((file, index) => (
-                <li key={index}>{file.name}</li>
-              ))}
-            </ul>
+        <div>
+          <p>Drag and drop images here:</p>
+          <div
+            className="drop-zone"
+            onDrop={(e) => {
+              e.preventDefault();
+              handleDrop(Array.from(e.dataTransfer.files));
+            }}
+            onDragOver={(e) => e.preventDefault()}
+          >
+            {/* Display uploaded images */}
+            {pictures.map((file, index) => (
+              <div key={index}>
+                {file.name}
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt={`uploaded-${index}`}
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    marginRight: "10px",
+                  }}
+                />
+              </div>
+            ))}
           </div>
-        )}
+        </div>
+        <br />
+        <button type="submit">Add Listing</button>
 
-        <button type="button" onClick={handleAddListing}>
-          Add Listing
-        </button>
       </form>
     </div>
   );
 };
 
-export default AddListing;
+export default CreateListing;

@@ -1,13 +1,13 @@
 import { gql } from "@apollo/client";
 
 export const GET_USERS = gql`
-  query GetUser($id: ID!) {
-    user(id: $id) {
-      id
+  query GetUser($_id: ID!) {
+    user(_id: $_id) {
+      _id
       username
       email
       listings {
-        id
+        _id
         title
         description
         price
@@ -19,7 +19,7 @@ export const GET_USERS = gql`
       }
       cart {
         listing {
-          id
+          _id
           title
           description
           price
@@ -37,7 +37,7 @@ export const GET_USERS = gql`
 export const GET_LISTINGS = gql`
   query GetListings($filter: ListingFilterInput, $sort: ListingSortInput) {
     listings(filter: $filter, sort: $sort) {
-      id
+      _id
       title
       description
       price
@@ -47,7 +47,7 @@ export const GET_LISTINGS = gql`
       active
       pictures
       createdBy {
-        id
+        _id
         username
         email
       }
@@ -56,9 +56,9 @@ export const GET_LISTINGS = gql`
 `;
 
 export const GET_LISTING = gql`
-  query GetListing($id: ID!) {
-    listing(id: $id) {
-      id
+  query GetListing($_id: ID!) {
+    listing(_id: $_id) {
+      _id
       title
       description
       price
@@ -68,7 +68,7 @@ export const GET_LISTING = gql`
       active
       pictures
       createdBy {
-        id
+        _id
         username
         email
       }
