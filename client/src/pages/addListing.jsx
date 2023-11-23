@@ -48,6 +48,7 @@ const CreateListing = () => {
       setPictures([]);
     } catch (error) {
       console.error("Error adding listing:", error.message);
+
     }
   };
 
@@ -138,6 +139,7 @@ const CreateListing = () => {
         </div>
         <br />
         <button type="submit">Add Listing</button>
+
       </form>
     </div>
   );
