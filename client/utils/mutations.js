@@ -32,7 +32,7 @@ export const CREATE_LISTING = gql`
     $gender: String!
     $category: String!
     $active: Boolean!
-    $pictures: Upload,
+    $pictures: String,
   ) {
     createListing(
       title: $title
@@ -65,7 +65,7 @@ export const EDIT_LISTING_MUTATION = gql`
     $size: String
     $gender: String
     $category: String
-    $pictures: Upload
+    $pictures: String
     $active: Boolean
   ) {
     editListing(

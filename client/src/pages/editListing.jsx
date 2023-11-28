@@ -1,7 +1,8 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { useMutation } from "@apollo/client";
-import { EDIT_LISTING_MUTATION } from "../utils/mutations";
+// import { EDIT_LISTING_MUTATION } from "../utils/mutations.js";
+
 
 const EditListingForm = ({ listingId, initialData }) => {
   const [formData, setFormData] = useState(initialData);
@@ -11,7 +12,7 @@ const EditListingForm = ({ listingId, initialData }) => {
     try {
       const { data } = await editListing({
         variables: {
-          id: listingId,
+          _id: listingId,
           ...formData,
         },
       });
@@ -49,18 +50,18 @@ const EditListingForm = ({ listingId, initialData }) => {
   );
 };
 
-EditListingForm.propTypes = {
-  listingId: PropTypes.string.isRequired,
-  initialData: PropTypes.shape({
-    title: PropTypes.string,
-    description: PropTypes.string,
-    price: PropTypes.number,
-    size: PropTypes.string,
-    gender: PropTypes.string,
-    category: PropTypes.string,
-    pictures: PropTypes.arrayOf(PropTypes.string),
-    active: PropTypes.bool,
-  }).isRequired,
-};
+// EditListingForm.propTypes = {
+//   listingId: PropTypes.string.isRequired,
+//   initialData: PropTypes.shape({
+//     title: PropTypes.string,
+//     description: PropTypes.string,
+//     price: PropTypes.number,
+//     size: PropTypes.string,
+//     gender: PropTypes.string,
+//     category: PropTypes.string,
+//     pictures: PropTypes.arrayOf(PropTypes.string),
+//     active: PropTypes.bool,
+//   }).isRequired,
+// };
 
 export default EditListingForm;
