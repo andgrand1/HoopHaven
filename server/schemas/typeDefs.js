@@ -61,7 +61,7 @@ const typeDefs = `
       gender: String!
       category: String!
       active: Boolean!
-      pictures: [String]!
+      pictures: [String]
     ): Listing
     editListing(
       _id: ID!

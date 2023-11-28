@@ -14,10 +14,10 @@ const CreateListing = () => {
   // UseMutation hook to execute the mutation
   const [createListing] = useMutation(CREATE_LISTING);
 
-  const handleDrop = (files) => {
-    // Handle the dropped files (images) and update the state
-    setPictures([...pictures, ...files]);
-  };
+  // const handleDrop = (files) => {
+  //   // Handle the dropped files (images) and update the state
+  //   setPictures([...pictures, ...files]);
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,7 +48,6 @@ const CreateListing = () => {
       setPictures([]);
     } catch (error) {
       console.error("Error adding listing:", error.message);
-
     }
   };
 
@@ -109,8 +108,18 @@ const CreateListing = () => {
           />
         </label>
         <br />
+        <label>
+          Picture:
+          <input
+            type="text"
+            value={pictures}
+            onChange={(e) => setPictures(e.target.value)}
+          />
+        </label>
+        <br />
 
-        <div>
+        {/* <div>
+ 
           <p>Drag and drop images here:</p>
           <div
             className="drop-zone"
@@ -120,7 +129,6 @@ const CreateListing = () => {
             }}
             onDragOver={(e) => e.preventDefault()}
           >
-            {/* Display uploaded images */}
             {pictures.map((file, index) => (
               <div key={index}>
                 {file.name}
@@ -136,10 +144,9 @@ const CreateListing = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
         <br />
         <button type="submit">Add Listing</button>
-
       </form>
     </div>
   );

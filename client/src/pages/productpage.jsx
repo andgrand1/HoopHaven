@@ -45,11 +45,6 @@ const ProductPage = () => {
 
   return (
     <div>
-      {/* Navigation Bar */}
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        
-      </nav>
-
       {/* Product Page Content */}
       <Container className="mt-5">
         <h1 className="text-center">Explore Our Products</h1>

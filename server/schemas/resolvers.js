@@ -150,7 +150,7 @@ const resolvers = {
     ) => {
       try {
         const updatedListing = await Listing.findByIdAndUpdate(
-          id,
+          _id,
           {
             title,
             description,
