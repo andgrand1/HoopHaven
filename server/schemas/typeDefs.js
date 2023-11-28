@@ -19,7 +19,6 @@ const typeDefs = `
     category: String!
     active: Boolean!
     pictures: [String]
-    createdBy: User
   }
 
   type CartItem {

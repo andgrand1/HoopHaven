@@ -36,7 +36,6 @@ const listingSchema = new Schema({
     default: Date.now,
     get: (timestamp) => dateFormat(timestamp),
   },
-  createdBy: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
 const Listing = model("Listing", listingSchema);

@@ -53,10 +53,6 @@ export const CREATE_LISTING = gql`
       category
       active
       pictures
-      createdBy {
-        id
-        username
-      }
     }
   }
 `;
@@ -92,10 +88,6 @@ export const EDIT_LISTING_MUTATION = gql`
       category
       pictures
       active
-      createdBy {
-        id
-        username
-      }
     }
   }
 `;
