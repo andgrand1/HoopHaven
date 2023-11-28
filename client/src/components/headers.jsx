@@ -1,40 +1,48 @@
 import React from 'react';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 
 const Header = () => {
   return (
-    <div>
-      {/* Navigation Bar */}
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="container-fluid">
-          <a className="navbar-brand" href="/">Hoop Haven</a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ms-auto">
-              <li className="nav-item">
-                <a className="nav-link" href="/">Home</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/products">Products</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/mylistings">My Listings</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/about">About</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/signup">SignUp</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/login">Login</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </div>
+    <Navbar bg="dark" variant="dark" expand="lg">
+      <Container>
+        <Navbar.Brand href="/" className="brand">Hoop Haven</Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbarNav" />
+        <Navbar.Collapse id="navbarNav">
+          <Nav className="ms-auto">
+            <Nav.Link href="/">Home</Nav.Link>
+            <Nav.Link href="/products">Products</Nav.Link>
+            <Nav.Link href="/mylistings">My Listings</Nav.Link>
+            <Nav.Link href="/about">About</Nav.Link>
+            <Nav.Link href="/signup">SignUp</Nav.Link>
+            <Nav.Link href="/login">Login</Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+
+      {/* Additional styling */}
+      <style>{`
+        .navbar {
+          border-bottom: 2px solid #ffffff;
+          padding: 10px 0;
+        }
+
+        .brand {
+          font-size: 2rem;
+          font-weight: bold;
+          margin-right: 20px; /* Add margin to separate from the links */
+        }
+
+        .navbar-nav .nav-link {
+          padding: 10px 15px;
+          border: 1px solid #ffffff;
+          margin: 0 5px;
+        }
+
+        .navbar-toggler-icon {
+          border: 1px solid #ffffff;
+        }
+      `}</style>
+    </Navbar>
   );
 };
 
