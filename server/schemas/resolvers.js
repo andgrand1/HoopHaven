@@ -94,19 +94,19 @@ const resolvers = {
     },
     createListing: async (
       _,
-      { title, description, price, size, gender, category, active },
+      { title, description, price, size, gender, category, active, pictures },
       { req }
     ) => {
       try {
-        const user = await User.findById(req.userId);
+        // const user = await User.findById(req.userId);
 
-        if (!user) {
-          throw new Error("User not found");
-        }
+        // if (!user) {
+        //   throw new Error("User not found");
+        // }
 
-        const pictures = req.files.map((file) => file.path); // Get file paths
+        //const picture = req.files.map((file) => file.path); // Get file paths
 
-        const listing = new Listing({
+        const listing = await Listing.create({
           title,
           description,
           price,
@@ -115,21 +115,20 @@ const resolvers = {
           category,
           active,
           pictures,
-          createdBy,
         });
 
-        const userPush = await User.findOneAndUpdate(
-          { _id },
-          { $push: { listing: listing } },
-          { new: true }
-        );
-        return userPush;
+        // const userPush = await User.findOneAndUpdate(
+        //   { _id },
+        //   { $push: { listing: listing } },
+        //   { new: true }
+        // );
+        // return userPush;
 
         // await listing.save();
         // user.listings.push(listing);
         // await user.save();
 
-        //return listing;
+        return listing;
       } catch (error) {
         console.error(error);
         throw new Error("Error creating listing");
@@ -196,18 +195,6 @@ const resolvers = {
 
       await user.save();
       return user;
-    },
-  },
-  User: {
-    // id: (user) => user._id,
-    listings: async (user) => {
-      return Listing.find({ createdBy: user._id });
-    },
-  },
-  Listing: {
-    //id: (listing) => listing._id,
-    createdBy: async (listing) => {
-      return User.findById(listing.createdBy);
     },
   },
 };

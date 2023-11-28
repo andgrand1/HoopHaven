@@ -46,11 +46,6 @@ export const GET_LISTINGS = gql`
       category
       active
       pictures
-      createdBy {
-        _id
-        username
-        email
-      }
     }
   }
 `;
@@ -67,11 +62,6 @@ export const GET_LISTING = gql`
       category
       active
       pictures
-      createdBy {
-        _id
-        username
-        email
-      }
     }
   }
 `;
