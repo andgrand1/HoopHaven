@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+//import { useHistory } from 'react-router-dom';
 import { Container, Form, Button } from 'react-bootstrap';
 
 const Signup = () => {
-  const history = useHistory();
+  //const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -22,7 +22,7 @@ const Signup = () => {
 
       if (response.ok) {
         console.log('Signup successful');
-        history.push('/dashboard');
+        //history.push('/dashboard');
       } else {
         console.error('Signup failed');
       }
