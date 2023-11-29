@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import './style.css'
+
 const Homepage = () => {
   const [listings, setListings] = useState([]);
 
@@ -10,9 +12,8 @@ const Homepage = () => {
         title: "Michael Jordan Jersey",
         price: 99.99,
         size: "M",
-        pictures: ["../images/michaeljordanjersey.avif"],
+        pictures: ["src/assets/images/im-147529.jpeg"],
       },
-      
     ];
 
     setListings(dummyListings);
@@ -20,7 +21,6 @@ const Homepage = () => {
 
   return (
     <div>
-    
       {/* Home Page Content */}
       <Container className="mt-4">
         <Row>
@@ -36,18 +36,20 @@ const Homepage = () => {
         </Row>
 
         <Row>
-          <Col md={4} style={{ paddingLeft: '0px', paddingRight: '10px' }}>
-            <div className="text-center mt-4">
-              <img src="../michaeljordanjersey.avif" className="img-fluid" alt="Michael Jordan Jersey" />
-            </div>
-
-            
-
-          </Col>
+          {listings.map((listing) => (
+            <Col md={4} key={listing._id} style={{ paddingLeft: '0px', paddingRight: '10px' }}>
+              <div className="text-center mt-4">
+                <img
+                  src={listing.pictures[0]}
+                  className="img-fluid"
+                  alt={listing.title}
+                  style={{ maxWidth: '60%', height: '40%' }}
+                />
+              </div>
+            </Col>
+          ))}
         </Row>
       </Container>
-
-     
     </div>
   );
 };
