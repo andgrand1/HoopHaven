@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
-//import { useHistory } from 'react-router-dom';
 import { Container, Form, Button } from 'react-bootstrap';
+import { useMutation } from '@apollo/client';
+import { CREATE_USER } from "../../utils/mutations";
+
 
 const Signup = () => {
-  //const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const [createUser] = useMutation(CREATE_USER);
+
   const handleSignup = async () => {
     try {
-      const response = await fetch('<ourserversendpoint>', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const { data } = await createUser({
+        variables: {
           email,
           password,
-        }),
+        },
       });
 
-      if (response.ok) {
+      
+      if (data && data.createUser) {
         console.log('Signup successful');
-        //history.push('/dashboard');
+        // Redirect or perform any action after successful signup
       } else {
         console.error('Signup failed');
       }

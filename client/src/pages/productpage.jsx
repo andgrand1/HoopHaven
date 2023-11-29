@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
+import './style.css'
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
@@ -28,8 +29,13 @@ const ProductPage = () => {
           },
           body: JSON.stringify({ query }),
         });
+        if (!response.ok) {
+          throw new Error('Failed to fetch products');
+        }
+      
 
         const result = await response.json();
+        console.log('Server response:', result);
         setProducts(result.data.listings);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -37,9 +43,22 @@ const ProductPage = () => {
     };
 
     fetchProducts();
-  }, []);
+  }, []); // Empty dependency array ensures the useEffect runs only once
 
-  if (products.length === 0) {
+  // Hardcoded product
+  const hardcodedProduct = {
+    _id: '123',
+    name: 'Kobe 6 Grinches',
+    price: 799.99,
+    description: 'The Nike Zoom Kobe 6 ‘Grinch’ launched Christmas Day in 2010, featuring a Green Apple colorway that calls to mind to the Dr. Seuss character with a penchant for ruining everyone’s famous December holiday. However the real inspiration behind this colorway is the deadly Green Mamba snake, with green scales and deep black eyes which can be seen on the scaly Mamba-inspired texture on the upper, with a contrasting black Swoosh. Red accents tie together the Christmas theme, highlighted with Kobe Bryant’s logo in red atop the tongue.',
+    category: 'Demo',
+    gender: 'Men',
+  };
+
+  // Adding the hardcoded product to the products state
+  const updatedProducts = [hardcodedProduct, ...products];
+
+  if (updatedProducts.length === 0) {
     return <p>Loading...</p>;
   }
 
@@ -51,10 +70,10 @@ const ProductPage = () => {
 
         {/* Product List */}
         <Row className="mt-4">
-          {products.map((product) => (
+          {updatedProducts.map((product) => (
             <Col key={product._id} md={4}>
               <Card>
-                <Card.Img variant="top" src="jordan11.jpeg" alt={product.name} />
+                <Card.Img variant="top" src="../assets/images/s-l1200.jpeg" style={{ maxWidth: '40%', height: '40%' }} alt={product.name} />
                 <Card.Body>
                   <Card.Title>{product.name}</Card.Title>
                   <Card.Text>{product.description}</Card.Text>
@@ -62,7 +81,6 @@ const ProductPage = () => {
                     <li className="list-group-item">Price: ${product.price}</li>
                     <li className="list-group-item">Category: {product.category}</li>
                     <li className="list-group-item">Gender: {product.gender}</li>
-                   
                   </ul>
                 </Card.Body>
               </Card>
@@ -78,4 +96,3 @@ const ProductPage = () => {
 };
 
 export default ProductPage;
-

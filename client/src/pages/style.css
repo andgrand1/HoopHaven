@@ -1,0 +1,135 @@
+
+body, h1, p {
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: whitesmoke; 
+    background-image: url('../assets/images/2020-finals-court-2-784x527.jpg');
+  }
+  
+  p {
+    font-size: 1.2rem;
+    color: #555; 
+    line-height: 1.6;
+    
+    
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+    
+  }
+  
+  .intro-section {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .intro-section h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+  }
+  
+  .intro-section p {
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+  
+  .listing-section {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+  
+  .listing-card {
+    width: 30%;
+    margin: 10px 0;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .listing-card img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  .footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  .navbar {
+    border-bottom: 2px solid #ffffff;
+    padding: 10px 0;
+  }
+  
+  
+  
+  .navbar-nav .nav-link {
+    padding: 10px 15px;
+    border: 1px solid #ffffff;
+    margin: 0 5px;
+  }
+  
+  .navbar-toggler-icon {
+    border: 1px solid #ffffff;
+  }
+  
+
+
+  
+  .brand {
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: 'cursive';
+    padding: 10px; 
+    background-color: #3498db; 
+    color: #ffffff; 
+    border-radius: 10px; 
+    margin-right: 20px;
+  }
+  
+  .navbar-nav .nav-link {
+    padding: 10px 15px;
+    border: 1px solid #ffffff;
+    margin: 0 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .navbar-nav .nav-link:hover {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .description-hover {
+    font-size: 14px; /* Adjust the font size as needed */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  
